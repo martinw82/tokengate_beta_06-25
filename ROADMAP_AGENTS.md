@@ -1,13 +1,18 @@
 Tokengate v1 – Full Web3 OAuth Provider Roadmap
-I (Grok) will handle this exactly as your AI coding agent.
+###AGENT INSTRUCTIONS###
 Every session is self-contained:
 
-I complete only the tasks listed
-I output every file change / new file with full code
+complete only the tasks listed
 I log exact progress + what was tested
-I end with “Session X completed. All changes pushed to branch feature/session-X. Ready for restart.”
+push each completed task to github including updated ROADMAP_AGENTS.md file
+end each task with “Session X completed. All changes pushed to branch feature/session-X. Ready for restart.”
 
-You reply with “Start Session N” and I continue from there (no overlap, no assumptions).
+User will reply with “Start Session N” and you (agent) continue from there (no overlap, no assumptions).
+
+continue reading below to see what task we are on
+##############################################
+
+
 Tech decisions locked in:
 
 Frontend: Vite + React + TS (existing)
