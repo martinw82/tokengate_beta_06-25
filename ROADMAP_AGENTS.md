@@ -23,6 +23,8 @@ Unique gate IDs stored in MySQL
 Multi-EVM chains first (Algorand ASA later if you ask)
 
 SESSION PLAN (do in this exact order)
+
+############first task is to check if task 1 is already done, scan the code and decide if it is done already or not#########
 Session 1: Dependencies & Wallet Migration
 
 Remove @perawallet/connect
