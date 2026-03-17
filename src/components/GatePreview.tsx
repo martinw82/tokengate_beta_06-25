@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useConnect, useAccount } from 'wagmi';
 import { TokenGateConfig, TestnetTokenGateConfig } from '../types';
 import { Shield, Wallet, CheckCircle, XCircle } from 'lucide-react';
 
@@ -7,23 +8,19 @@ interface GatePreviewProps {
 }
 
 export const GatePreview: React.FC<GatePreviewProps> = ({ config }) => {
-  const [walletConnected, setWalletConnected] = useState(false);
+  const { connect, connectors, isPending } = useConnect();
+  const { isConnected } = useAccount();
   const [hasAccess, setHasAccess] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
 
   const handleConnectWallet = () => {
-    setIsChecking(true);
-    // Simulate verification delay
-    setTimeout(() => {
-      setWalletConnected(true);
-      setIsChecking(false);
-      // For demo purposes, we'll randomly grant or deny access
-      setHasAccess(Math.random() > 0.5);
-    }, 1500);
+    const metaMaskConnector = connectors.find(c => c.id === 'metaMask');
+    if (metaMaskConnector) {
+      connect({ connector: metaMaskConnector });
+    }
   };
 
   const handleReset = () => {
-    setWalletConnected(false);
     setHasAccess(false);
   };
 
@@ -114,29 +111,29 @@ export const GatePreview: React.FC<GatePreviewProps> = ({ config }) => {
   return (
     <div className="p-6 min-h-[400px] flex flex-col">
       <div className="flex-1 flex items-center justify-center">
-        {!walletConnected ? (
+        {!isConnected ? (
           <div className="text-center p-6">
             <Shield className="w-16 h-16 text-indigo-500 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-white mb-2">
               Token-Gated Content
             </h2>
             <p className="text-gray-400 max-w-md mx-auto mb-6">
-              This content is protected and requires ownership of a specific token on 
+              This content is protected and requires ownership of a specific token on
               the {getNetworkDisplayName(config.network)} {isTestnet ? 'testnet' : 'mainnet'} network.
             </p>
             <button
               onClick={handleConnectWallet}
-              disabled={isChecking}
+              disabled={isPending}
               className={`
                 px-4 py-2 rounded-md flex items-center mx-auto
-                ${isChecking 
-                  ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
+                ${isPending
+                  ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
                   : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                 }
                 transition-colors
               `}
             >
-              {isChecking ? (
+              {isPending ? (
                 <>
                   <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin mr-2"></div>
                   Connecting...
